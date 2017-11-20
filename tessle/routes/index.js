@@ -7,6 +7,7 @@ module.exports = function (io) {
   })
 
   router.get('/image', function (req, res) {
+    res.set({ 'Content-Type': 'image/jpg' })
     res.sendFile(path.join(__dirname, '../public/cat2.jpg'))
   })
   return router
