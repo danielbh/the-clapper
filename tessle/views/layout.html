@@ -60,6 +60,18 @@
       var audio = new Audio('cat-meow.mp3')
       audio.play()
     });
+
+    setInterval(function(){
+      $.ajax({
+        type: 'GET',
+        url: '/image',
+        success: function (data) {
+          $("#photo").attr("src", "/data:image/jpg;base64," + data);
+          console.log(data);
+        }
+      })
+    }, 5000)
+
   </script>
 </body>
 

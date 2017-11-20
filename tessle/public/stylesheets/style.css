@@ -47,3 +47,8 @@ code {
 .content .by {
   font-weight: bold;
 }
+
+#photobox {
+  display: flex;
+  justify-content: center;
+}
