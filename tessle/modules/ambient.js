@@ -5,10 +5,11 @@ var ambient = ambientlib.use(tessel.port['A'])
 function startAmbientSensor(done) {
   var maxClaps = 5
   var claps = 0
+  var threshold = 0.15
 
   ambient.on('ready', function () {
-    ambient.setSoundTrigger(0.20)
-    ambient.on('sound-trigger', soundTrigger)
+    ambient.setSoundTrigger(threshold)
+    ambient.once('sound-trigger', soundTrigger)
     console.log('Clap detection ready')
     if (done) done()
   })
@@ -16,7 +17,10 @@ function startAmbientSensor(done) {
   /*
     Sound sensor event handlers
   */
-  function soundTrigger() {
+  function soundTrigger(delta) {
+
+    // TODO what is delta?
+
     console.log('Clap detected', claps)
     ++claps
     // To create pauses for claps. Constant sounds can't work
@@ -27,24 +31,25 @@ function startAmbientSensor(done) {
     if (claps >= maxClaps) {
       stopListening()
       triggerClapResponse(startListening)
+      claps = 0
     }
   }
 
   function startListening() {
     console.log('Started Listening', claps)
-    ambient.on('sound-trigger', soundTrigger)
-    ambient.setSoundTrigger(0.17)
+    ambient.once('sound-trigger', soundTrigger)
+    ambient.setSoundTrigger(threshold)
   }
 
   function stopListening() {
     console.log('Stopped listening', claps)
-    ambient.removeListener('sound-trigger', soundTrigger)
     ambient.clearSoundTrigger()
   }
 
-  function triggerClapResponse(done) {
+  function triggerClapResponse(io, done) {
     // TODO: Send request to initiate clap response
     // Call done when done
+    io.emit('clap_back')
     done()
   }
 }

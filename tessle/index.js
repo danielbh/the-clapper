@@ -3,8 +3,8 @@
 var { startServer } = require('./server')
 
 startServer(function (app, io) {
-  setInterval(function () {
-     io.emit('clap_back')
-  }, 10000)
+  // startAmbientSensor(io, () => {
+
+  // })
 })
 
